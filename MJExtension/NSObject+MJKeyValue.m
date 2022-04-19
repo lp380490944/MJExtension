@@ -217,6 +217,13 @@ static const char MJReferenceReplacedKeyWhenCreatingKeyValuesKey = '\0';
             }
             
             // 3.赋值
+            //赋值前先对CoreData进行处理
+        if ([context isKindOfClass:[NSManagedObjectContext class]] &&
+            propertyClass == [NSSet class]                         &&
+            [value isKindOfClass:[NSArray class]])
+        {
+            value = [[NSSet alloc] initWithArray:value];
+        }
             [property setValue:value forObject:self];
         } @catch (NSException *exception) {
             MJExtensionBuildError([self class], exception.reason);
